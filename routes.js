@@ -1,7 +1,7 @@
 /*
   Prefiero el Motor EJS, primero porque es el mas parecido a JS de los tres y luego 
   porque es el más elegido en la comunidad.
-  
+
 */
 const express = require('express');
 const { Router } = express; 
@@ -15,7 +15,6 @@ router.get('/productosHand', function (req, res) {
   if (!resultado){
     res.render('productos', resultado);    
 }else {
-    
     res.render('productos', '');    
 }
 });
@@ -23,7 +22,7 @@ router.get('/productosHand', function (req, res) {
 router.get('/productosPug', function (req, res) {
   let resultado = c1.getAll();
   res.render('productosPug', {
-    productos :resultado,
+    productos : resultado,
     "mensaje": "Productos"
   });   
 });
