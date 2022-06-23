@@ -1,39 +1,21 @@
-/*
-  Prefiero el Motor EJS, primero porque es el mas parecido a JS de los tres y luego 
-  porque es el más elegido en la comunidad.
-  
-*/
+
 const express = require('express');
 const { Router } = express; 
 const ClasProd = require('./clasprod.js');
 const c1         = new ClasProd();
 const router = Router();
 
-
-router.get('/productosHand', function (req, res) {
+// Mostramos todos los productos
+router.get('/productos', function (req, res) {
   let resultado = c1.getAll();
-  if (!resultado){
-    res.render('productos', resultado);    
-}else {
-    
-    res.render('productos', '');    
-}
+
+  if(resultado !== null){
+        res.send(resultado)
+    } else {
+        res.status(400).send({error: 'No hay productos'})
+    }
+
 });
-
-router.get('/productosPug', function (req, res) {
-  let resultado = c1.getAll();
-  res.render('productosPug', {
-    productos :resultado,
-    "mensaje": "Productos"
-  });   
-});
-
-router.get('/productosEjs', function (req, res) {
-  let resultado = c1.getAll();
-  res.render('ejs/productosEjs', {productos : resultado, mensaje: "Productos"}); 
-});
-
-
 // damos de alta un nuevo producto
 router.post('/productos/', function (req, res) {
   let resultado  = c1.save(req.body)
