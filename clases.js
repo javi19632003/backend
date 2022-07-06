@@ -1,13 +1,14 @@
 
 const fs = require("fs");
 
-class Contenedor {
+class ClasProd {
     constructor(archivo){
         this.archivo   = archivo;
     }
 
     async save (obj){
         try {
+            console.log(obj)
             const contenido = JSON.parse( await fs.promises.readFile(this.archivo,'utf-8'))
             let idNew = 0;
             contenido.forEach(ele => {
@@ -82,8 +83,28 @@ class Contenedor {
         catch(err){
             console.log('error en escritura: ', err)
         }
+
+        
 }        
+async rewriteById(id){
+
+    try {
+      //  const = borrado
+        const contenido = JSON.parse(await fs.promises.readFile(this.archivo,'utf-8'))
+        const miIndice = contenido.findIndex( ( producto ) => producto.id === id ? true : false )
+        if (miIndice !== -1){
+            contenido.splice( miIndice, 1 )      
+            await this.writeAll(contenido)
+        }
+        
+        return contenido;
+    }
+    catch(err){
+        console.log('error en lectura: ', err)
+    }
+} 
+
 
 }
 
-module.exports =  Contenedor;
+module.exports =  ClasProd;

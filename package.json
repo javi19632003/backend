@@ -1,17 +1,26 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "ejs": "^3.1.8",
     "express": "^4.18.1",
-    "nodemon": "^2.0.16",
+    "nodemon": "^2.0.19",
     "pug": "^3.0.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/javi19632003/backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/javi19632003/backend/issues"
+  },
+  "homepage": "https://github.com/javi19632003/backend#readme",
+  "description": ""
 }
