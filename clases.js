@@ -1,6 +1,7 @@
 
 const fs = require("fs");
 
+
 class ClasProd {
     constructor(archivo){
         this.archivo   = archivo;
@@ -8,7 +9,6 @@ class ClasProd {
 
     async save (obj){
         try {
-            console.log(obj)
             const contenido = JSON.parse( await fs.promises.readFile(this.archivo,'utf-8'))
             let idNew = 0;
             contenido.forEach(ele => {
@@ -16,8 +16,9 @@ class ClasProd {
                     idNew = ele.id;
                 }
             });
-            idNew = idNew + 1;
-            obj.id = idNew;
+            idNew         = idNew + 1;
+            obj.id        = idNew;
+            obj.timestamp = Date.now()
             contenido.push(obj);
             await this.writeAll(contenido);
             return idNew;
@@ -60,12 +61,11 @@ class ClasProd {
             if (miIndice !== -1){
                 contenido.splice( miIndice, 1 )      
                 await this.writeAll(contenido)
-            }
-            
-            return contenido;
+                return 1;
+            } else { return -1}
         }
         catch(err){
-            console.log('error en lectura: ', err)
+            return -1;
         }
     } 
 
@@ -86,24 +86,28 @@ class ClasProd {
 
         
 }        
-async rewriteById(id){
+async rewriteById(obj){
 
     try {
-      //  const = borrado
-        const contenido = JSON.parse(await fs.promises.readFile(this.archivo,'utf-8'))
-        const miIndice = contenido.findIndex( ( producto ) => producto.id === id ? true : false )
-        if (miIndice !== -1){
-            contenido.splice( miIndice, 1 )      
-            await this.writeAll(contenido)
-        }
-        
-        return contenido;
+        const borrado = await this.deleteById(obj.id);
+        if (borrado == 1) {
+            const contenido = JSON.parse( await fs.promises.readFile(this.archivo,'utf-8'))
+            contenido.push(obj);
+            const contenidoOrdenado = contenido.sort(this.SortArray);
+            await this.writeAll(contenidoOrdenado);
+            return 1;
+        } else { return -1}
     }
     catch(err){
-        console.log('error en lectura: ', err)
+        return -1
     }
 } 
 
+SortArray(x, y){
+    if (x.id < y.id) {return -1;}
+    if (x.id > y.id) {return 1;}
+    return 0;
+}
 
 }
 

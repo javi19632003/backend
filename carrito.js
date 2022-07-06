@@ -1,22 +1,25 @@
+const { v4: uuidv4 } = require('uuid');
 
-
-class ClasProd {
+class Carrito {
     constructor(){
-        this.contenido   = [];
+        this.id = uuidv4();
+        this.timestamp      = Date.now()
+        this.contenidoCar   = [];
     }
-
-    save (obj){
+    add (obj){
         try {
             let idNew = 0;
-            this.contenido.forEach(ele => {
+            this.contenidoCar.forEach(ele => {
                 if(ele.id > idNew){
                     idNew = ele.id;
                 }
             });
-            idNew = idNew + 1;
-            obj.id = idNew;
-            this.contenido.push(obj);
+            idNew         = idNew + 1;
+            obj.id        = idNew;
+            obj.timestamp = Date.now()
+            this.contenidoCar.push(obj);
             let resultado = this.getById(idNew)
+            console.log(resultado)
             return resultado;
         }
         catch(err){
@@ -27,9 +30,11 @@ class ClasProd {
     getById(id){
         let obj = null;
         try {
-            const unProducto = this.contenido.find( ( elemento ) => elemento.id === id)
+            const unProducto = this.contenidoCar.find( ( elemento ) => elemento.id === id)
             if (unProducto){
-                obj = unProducto
+                obj = {"id": this.id,
+                    "timestamp": this.timestamp,
+                    "productos": unProducto}
             }
             return obj;    
         }
@@ -39,7 +44,9 @@ class ClasProd {
     }
     getAll(){
         try {
-            return this.contenido;    
+            return  obj = {"id": this.id,
+            "timestamp": this.timestamp,
+            "productos": this.contenidoCar};    
         }
         catch(err){
             return null;
@@ -49,9 +56,9 @@ class ClasProd {
     deleteById(id){
 
         try {
-            const miIndice = this.contenido.findIndex( ( producto ) => producto.id === id ? true : false )
+            const miIndice = this.contenidoCar.findIndex( ( producto ) => producto.id === id ? true : false )
             if (miIndice !== -1){
-                this.contenido.splice( miIndice, 1 )      
+                this.contenidoCar.splice( miIndice, 1 )      
                 return 1;
             }
          
@@ -64,13 +71,13 @@ class ClasProd {
 
     // Borro todo       
     deleteAll(){
-        this.contenido = [];
+        this.contenidoCar = [];
         return null
     }    
 
-    writeAll(contenido){
+    writeAll(contenidoCar){
         try {
-            this.contenido = contenido ; 
+            this.contenidoCar = contenidoCar ; 
         }
         catch(err){
             console.log('error en escritura: ', err)
@@ -80,9 +87,9 @@ class ClasProd {
     //modificaciones    
     rewriteById(miProducto){
         try {
-            const miIndice = this.contenido.findIndex( ( producto ) => producto.id === miProducto.id ? true : false )
+            const miIndice = this.contenidoCar.findIndex( ( producto ) => producto.id === miProducto.id ? true : false )
             if (miIndice !== -1){
-                this.contenido( miIndice) = miProducto
+                this.contenidoCar( miIndice) = miProducto
                 return 1      
             }
             return -1;
@@ -95,4 +102,4 @@ class ClasProd {
 
 }
 
-module.exports =  ClasProd;
+module.exports =  Carrito;

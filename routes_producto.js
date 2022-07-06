@@ -10,54 +10,61 @@ router_producto.get('/', async function (req, res) {
   if(resultado !== null){
     res.status(200).send(resultado)
 } else {
-    res.status(400).send({error: 'productos no encontrados'})
+    res.status(400).send({error: -1, descripcion: 'No hay Productos para mostrar'})
 }
 });
 
-// damos de alta un nuevo producto
-router_producto.post('/', async function (req, res) {
-  let resultado  = await c1.save(req.body)
-  console.log(resultado)
-  
-  if(resultado !== null){
-        res.status(201).send({id: resultado});
-  } else {
-        res.status(400).send({error: 'el producto no pudo darse de alta'})
-    }
- });
 // mostramos un producto según su id
 router_producto.get('/:id', async function (req, res) {
   let resultado = await c1.getById(Number(req.params.id));
   if(resultado !== null){
         res.status(200).send(resultado)
     } else {
-        res.status(400).send({error: 'producto no encontrado'})
+        res.status(400).send({error: -1, descripcion: 'producto no encontrado'})
     }
 });
+
+// damos de alta un nuevo producto
+router_producto.post('/', async function (req, res) {
+  if (req.body.admin) {
+    let resultado  = await c1.save(req.body)
+    if(resultado !== null){
+          res.status(201).send({id: resultado});
+    } else {
+          res.status(400).send({error: -1, descripcion:'el producto no pudo darse de alta'})
+      }
+    } else {
+      res.status(400).send({error: -1, descripcion: "No es administrador, no puede usar POST"})
+  }  
+});
+
 // actualizamos un producto
-router_producto.put('/', async function (req, res) {
-  console.log(req.body)
-  
-  let resultado  = await c1.rewriteById(req.body)
-  /*
-  if(resultado == 1){
-    res.status(200).send({Ok: 'Ok'})
+router_producto.put('/:id', async function (req, res) {
+  if (req.body.admin) {
+    let resultado  = await c1.rewriteById(req.body.data)
+    if(resultado == 1){
+      res.status(200).send({estado: 'Ok'})
+    } else {
+      res.status(400).send({error:  -1, descripcion: 'No se pudo actualizar'})
+    }
   } else {
-    res.status(400).send({error: 'No hay productos'})
-  }
-  */
-  res.send("PUTO EL QUE LEE")
+      res.status(400).send({error: -1, descripcion: "No es administrador, no puede usar PUT"})
+  }  
 });
 
 //Borramos un producto
 router_producto.delete('/:id', async function (req, res) {
-  console.log("entre en DELETE")
-  let resultado = await c1.deleteById(Number(req.params.id));
-  if(resultado !== -1){
-        res.senStatus(200)
+  if (req.body.admin) {
+    let resultado = await c1.deleteById(Number(req.params.id));
+    if(resultado !== -1){
+        res.status(200).send({estado: 'Ok'})
+      } else {
+          res.status(400).send({error: -1, descripcion: 'producto no encontrado'})
+      }
     } else {
-        res.status(400).send({error: 'producto no encontrado'})
-    }  
+      res.status(400).send({error: -1, descripcion: "No es administrador, no puede usar DELETE"})
+  }  
+      
 });
 
 
