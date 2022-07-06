@@ -60,6 +60,12 @@ router_carrito.delete('/productos/:id', function (req, res) {
 });
 
 //ruta no declarada
+
+router_carrito.get('*', function (req, res) {
+  console.log(req.route)
+  res.status(400).send({error: -1, descripcion:  'ruta fea metodo GET no autorizada'})
+});
+
 router_carrito.post('*', function (req, res) {
   console.log(req.route)
   res.status(400).send({error: -1, descripcion:  'ruta fea metodo POST no autorizada'})

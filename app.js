@@ -9,7 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/', express.static(__dirname + "/public"));
 
-//app.use('/api/productos', router_producto)
+app.use('/api/productos', router_producto)
 app.use('/api/carrito', router_carrito)
 
 app.listen(PORT, () =>{

@@ -27,7 +27,7 @@ router_producto.get('/:id', async function (req, res) {
 // damos de alta un nuevo producto
 router_producto.post('/', async function (req, res) {
   if (req.body.admin) {
-    let resultado  = await c1.save(req.body)
+    let resultado  = await c1.save(req.body.data)
     if(resultado !== null){
           res.status(201).send({id: resultado});
     } else {
@@ -40,6 +40,7 @@ router_producto.post('/', async function (req, res) {
 
 // actualizamos un producto
 router_producto.put('/:id', async function (req, res) {
+  console.log(req.body)
   if (req.body.admin) {
     let resultado  = await c1.rewriteById(req.body.data)
     if(resultado == 1){
@@ -67,5 +68,26 @@ router_producto.delete('/:id', async function (req, res) {
       
 });
 
+//ruta no declarada
+
+router_producto.get('*', function (req, res) {
+  console.log(req.route)
+  res.status(400).send({error: -1, descripcion:  'ruta fea metodo GET no autorizada'})
+});
+
+router_producto.post('*', function (req, res) {
+  console.log(req.route)
+  res.status(400).send({error: -1, descripcion:  'ruta fea metodo POST no autorizada'})
+});
+
+router_producto.delete('*', function (req, res) {
+  console.log(req.body)
+  res.status(400).send({error: -1, descripcion:  'ruta fea metodo DELETE no autorizada'})
+});
+
+router_producto.put('*', function (req, res) {
+  console.log(req.body)
+  res.status(400).send({error: -1, descripcion:  'ruta fea metodo PUT no autorizada'})
+});
 
 module.exports = router_producto;

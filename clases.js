@@ -6,7 +6,7 @@ class ClasProd {
     constructor(archivo){
         this.archivo   = archivo;
     }
-
+    // da de alta un solo producto 
     async save (obj){
         try {
             const contenido = JSON.parse( await fs.promises.readFile(this.archivo,'utf-8'))
@@ -27,7 +27,7 @@ class ClasProd {
             console.log('error en lectura: ', err)
         }
     }   
-
+    // devuelve el producto pedido
     async getById(id){
         let obj = null;
         try {
@@ -42,6 +42,7 @@ class ClasProd {
             console.log('error en lectura: ', err)
         }
     }
+    //devuelve todos los productos
     async getAll(){
         let obj = null;
         try {
@@ -51,7 +52,7 @@ class ClasProd {
         catch(err){
             console.log('error en lectura: ', err)
         }
-
+    // Borra el producto solicitado
     }        
     async deleteById(id){
 
@@ -75,7 +76,7 @@ class ClasProd {
         await this.writeAll(contenido)
         return null
     }    
-
+    // graba todo
     async writeAll(contenido){
         try {
             await fs.promises.writeFile(this.archivo,JSON.stringify(contenido))
@@ -85,7 +86,8 @@ class ClasProd {
         }
 
         
-}        
+}
+// modifica el prodcuto pedido        
 async rewriteById(obj){
 
     try {
