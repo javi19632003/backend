@@ -5,10 +5,41 @@ const Carrito            = require('./carrito.js');
 const MiCarrito          = new Carrito();
 const router_carrito     = Router();
 
-// Mostramos todos los productos
-router_carrito.get('/', function (req, res) {
-  let resultado = MiCarrito.getAll();
 
+// Crea un nuevo carrito de compras
+router_carrito.post('/', function (req, res) {
+  let resultado  = MiCarrito.creoCarrito()
+     if(resultado !== null){
+        res.status(201).send({id: resultado});
+     } else {
+        res.status(400).send({error: -1, descripcion: 'No se pudo crear el Carro de Compras'})
+    }
+ });
+ 
+ // borra y limpia un carrito
+ router_carrito.delete('/:id', function (req, res) {
+  let resultado  = MiCarrito.borroCarrito(req.params.id)
+    if(resultado !== null){
+        res.status(201).send({ok: "OK"});
+     } else {
+        res.status(400).send({error: -1, descripcion: 'No se pudo Borrar el Carro de Compras'})
+    }
+ });
+
+// Doy de alta un producto por su id en el carrito
+router_carrito.post('/:id/productos', async function (req, res) {
+  let resultado  =  await MiCarrito.sumoProducto(req.params.id)
+  if(resultado !== null){
+        res.status(200).send({ok: "OK"});
+  } else {
+        res.status(400).send({error: -1, descripcion: 'No se encontó el producto'})
+  }
+ });
+
+
+// Mostramos todos los productos de un determinado carrito
+router_carrito.get('/:id/productos', function (req, res) {
+  let resultado = MiCarrito.miroProductos(req.params.id);
   if(resultado !== null){
         res.send(resultado)
     } else {
@@ -16,6 +47,24 @@ router_carrito.get('/', function (req, res) {
     }
 
 });
+
+ // borra un producto del carrito
+ router_carrito.delete('/:id/productos/:id_prod', function (req, res) {
+  let resultado  = MiCarrito.borraProducto(req.params.id, req.params.id_prod)
+    if(resultado !== null){
+        res.status(201).send({ok: "OK"});
+     } else {
+        res.status(400).send({error: -1, descripcion: 'No se pudo Borrar el producto del Carro de Compras'})
+    }
+ });
+
+
+
+
+
+
+
+
 
 // mostramos un producto según su id
 router_carrito.get('/:id', function (req, res) {
@@ -28,16 +77,6 @@ router_carrito.get('/:id', function (req, res) {
 
   });
 
-// damos de alta un nuevo producto
-
-router_carrito.post('/', function (req, res) {
-  let resultado  = MiCarrito.add(req.body)
-    if(resultado !== null){
-        res.status(201).send({id: resultado});
-     } else {
-        res.status(400).send({error: -1, descripcion: 'el producto no pudo sacarse del carro de compras'})
-    }
- });
   
 // actualizamos un producto
 router_carrito.put('/:id', function (req, res) {
@@ -63,22 +102,22 @@ router_carrito.delete('/productos/:id', function (req, res) {
 
 router_carrito.get('*', function (req, res) {
   console.log(req.route)
-  res.status(400).send({error: -1, descripcion:  'ruta fea metodo GET no autorizada'})
+  res.status(400).send({error: -1, descripcion:  'ruta carrito metodo GET no autorizada'})
 });
 
 router_carrito.post('*', function (req, res) {
   console.log(req.route)
-  res.status(400).send({error: -1, descripcion:  'ruta fea metodo POST no autorizada'})
+  res.status(400).send({error: -1, descripcion:  'ruta carrito metodo POST no autorizada'})
 });
 
 router_carrito.delete('*', function (req, res) {
   console.log(req.body)
-  res.status(400).send({error: -1, descripcion:  'ruta fea metodo DELETE no autorizada'})
+  res.status(400).send({error: -1, descripcion:  'ruta carrito metodo DELETE no autorizada'})
 });
 
 router_carrito.put('*', function (req, res) {
   console.log(req.body)
-  res.status(400).send({error: -1, descripcion:  'ruta fea metodo PUT no autorizada'})
+  res.status(400).send({error: -1, descripcion:  'ruta carrito metodo PUT no autorizada'})
 });
 
 module.exports = router_carrito;

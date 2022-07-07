@@ -40,7 +40,6 @@ router_producto.post('/', async function (req, res) {
 
 // actualizamos un producto
 router_producto.put('/:id', async function (req, res) {
-  console.log(req.body)
   if (req.body.admin) {
     let resultado  = await c1.rewriteById(req.body.data)
     if(resultado == 1){
@@ -52,6 +51,7 @@ router_producto.put('/:id', async function (req, res) {
       res.status(400).send({error: -1, descripcion: "No es administrador, no puede usar PUT"})
   }  
 });
+
 
 //Borramos un producto
 router_producto.delete('/:id', async function (req, res) {
