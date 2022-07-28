@@ -1,7 +1,7 @@
 const express         = require('express');
 const { Router }      = express; 
-const ClasProd        = require('./clases.js');
-const c1              = new ClasProd('productos.json');
+const ClasProd        = require('../controladores/clases.js');
+const c1              = new ClasProd('./src/datos/productos.json');
 const router_producto = Router();
 
 // Lista todos los productos

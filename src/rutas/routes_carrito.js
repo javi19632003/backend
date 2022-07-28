@@ -1,7 +1,7 @@
 
 const express            = require('express');
 const { Router }         = express; 
-const Carrito            = require('./carrito.js');
+const Carrito            = require('../controladores/carrito.js');
 const MiCarrito          = new Carrito();
 const router_carrito     = Router();
 
