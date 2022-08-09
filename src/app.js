@@ -1,17 +1,18 @@
+import 'dotenv/config';
+import express                  from "express";
 
-const express           = require('express');
-const router_producto   = require('./rutas/routes_producto.js')
-const router_carrito    = require('./rutas/routes_carrito.js')
-const app               = express()
-const PORT              = process.env.PORT || 8080; 
+import {rutaCarrito, rutaProductos} from './rutas/index.js'
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use('/', express.static(__dirname + "/public"));
+const app = express();
 
-app.use('/api/productos', router_producto)
-app.use('/api/carrito', router_carrito)
+const PORT = process.env.PORT || 8080
 
-app.listen(PORT, () =>{
-    console.log(`Servidor Http escuchando en el puerto ${PORT}`)
-})
+app.use(express.json())
+app.use('/api/productos', rutaProductos)
+app.use('/api/carrito', rutaCarrito)
+
+const server = app.listen(PORT, () => {
+    console.log(`server funcionando en port http://localhost:${PORT}`);
+  });
+  server.on("error", (err) => console.error(err));
+  
